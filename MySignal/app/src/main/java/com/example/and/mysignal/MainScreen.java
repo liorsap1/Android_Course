@@ -6,21 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class MainScreen extends AppCompatActivity {
 
-    Button wifi;
-    Button cellular;
     Button map;
-
+    ImageView wifi;
+    ImageView cellular;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        wifi = (Button) findViewById(R.id.wifi_button);
-        cellular = (Button)findViewById(R.id.cellular_button);
-        map = (Button)findViewById(R.id.mapButton);
+        wifi = (ImageView) findViewById(R.id.wifi_button);
+        cellular = (ImageView)findViewById(R.id.cellular_button);
 
         final Context context = this;
 
@@ -38,12 +38,12 @@ public class MainScreen extends AppCompatActivity {
                 finish();
             }
         });
-        map.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MapsActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        map.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, MapsActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
     }
 }

@@ -1,50 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_cellular_data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context="com.example.and.mysignal.CellularData">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fitsSystemWindows="true">
 
-    <Button
-            android:text="get network information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/getType"
-            android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
 
-    <TextView
-            android:text="Press the button to get info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/typeText"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/getType"
-            android:layout_centerHorizontal="true"/>
-
-    <com.jjoe64.graphview.GraphView
+    <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/activity_cellular_data"
             android:layout_width="match_parent"
-            android:layout_height="200dip"
-            android:id="@+id/graph"
-            android:layout_marginBottom="55dp"
-            android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            tools:context="com.example.and.mysignal.CellularData">
 
-    <Button
-            android:text="go back home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/back_home"
-            android:gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
+        <!--<TextView-->
+        <!--android:text="Press the button to get info"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/typeText"-->
+        <!--android:layout_above="@+id/graph"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="80dp" />-->
 
-</RelativeLayout>
 
+        <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                app:srcCompat="@mipmap/back_button"
+                android:id="@+id/back_button"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+
+        <TextView
+                android:text="Router Indices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                android:textColor="#17bf0e"
+                android:layout_gravity="center"
+                android:id="@+id/typeText"
+                android:gravity="left"
+                android:textAlignment="gravity"
+
+
+                android:textStyle="bold"
+                android:padding="12dp"
+                android:background="@android:color/black"
+
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="24"
+                android:layout_below="@+id/back_button"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="14dp"/>
+
+        <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:id="@+id/graph"
+                android:layout_marginTop="21dp"
+                android:layout_below="@+id/typeText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+
+    </RelativeLayout>
+</ScrollView>

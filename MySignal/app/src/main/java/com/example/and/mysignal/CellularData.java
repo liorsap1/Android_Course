@@ -19,6 +19,7 @@ import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -32,8 +33,8 @@ public class CellularData extends AppCompatActivity {
 
 
     TelephonyManager telephone;
-    Button networkType;
-    Button backHome;
+   // Button networkType;
+    ImageView backHome;
     TextView textType;
     TextView signalStrength;
     Boolean clicked = false;
@@ -43,15 +44,16 @@ public class CellularData extends AppCompatActivity {
     LineGraphSeries<DataPoint> series;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cellular_data);
 
-        networkType = (Button) findViewById(R.id.getType);
-        backHome = (Button) findViewById(R.id.back_home);
+       // networkType = (Button) findViewById(R.id.getType);
+        backHome = (ImageView) findViewById(R.id.back_button);
         textType = (TextView) findViewById(R.id.typeText);
-        signalStrength = (TextView) findViewById(R.id.signal);
+        //signalStrength = (TextView) findViewById(R.id.signal);
         telephone = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
         final Context context = this;
@@ -68,16 +70,23 @@ public class CellularData extends AppCompatActivity {
         viewport.setScrollable(true);
 
 
-        networkType.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-            public void onClick(View v) {
-                String type = "Generation of phone: " + getNetworkClass(context) + "\n";
-                String info = getCellularInfo();
-                textType.setText(type + info);
-                clicked = !clicked;
-                runStrength();
-            }
-        });
+        String type = "Generation of phone: " + getNetworkClass(context) + "\n";
+        String info = getCellularInfo();
+        textType.setText(type + info);
+        clicked = !clicked;
+        runStrength();
+
+
+//        networkType.setOnClickListener(new View.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+//            public void onClick(View v) {
+//                String type = "Generation of phone: " + getNetworkClass(context) + "\n";
+//                String info = getCellularInfo();
+//                textType.setText(type + info);
+//                clicked = !clicked;
+//                runStrength();
+//            }
+//        });
         backHome.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(context, MainScreen.class);
@@ -179,7 +188,7 @@ public class CellularData extends AppCompatActivity {
         }
 
 
-        information += "Network strength: " + getSignalStrength() + " dBm\n";
+        //information += "Network strength: " + getSignalStrength() + " dBm\n";
         return information;
 
     }
