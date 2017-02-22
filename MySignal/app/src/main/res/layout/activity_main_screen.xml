@@ -33,13 +33,13 @@
             android:layout_marginEnd="61dp"
             android:id="@+id/cellular_button"/>
 
-    <TextClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/cellular_button"
-        android:layout_toRightOf="@+id/wifi_button"
-        android:layout_toEndOf="@+id/wifi_button"
-        android:layout_marginBottom="44dp"
-        android:id="@+id/textClock2" />
+    <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mapButton"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/wifi_button"
+            android:layout_toEndOf="@+id/wifi_button"/>
 
 </RelativeLayout>
