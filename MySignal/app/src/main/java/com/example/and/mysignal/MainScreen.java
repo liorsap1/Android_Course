@@ -13,6 +13,8 @@ public class MainScreen extends AppCompatActivity {
 
     ImageView wifi;
     ImageView cellular;
+    ImageView _map_button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,7 @@ public class MainScreen extends AppCompatActivity {
 
         wifi = (ImageView) findViewById(R.id.wifi_button);
         cellular = (ImageView)findViewById(R.id.cellular_button);
+        _map_button = (ImageView)findViewById(R.id.map_button);
 
         final Context context = this;
 
