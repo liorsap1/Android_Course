@@ -2,6 +2,7 @@ package com.example.and.mysignal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -47,6 +48,9 @@ public class wifiData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_data);
+
+
+
 
         signal = (TextView) findViewById(R.id.title);
         back = (Button) findViewById(R.id.back_home);
