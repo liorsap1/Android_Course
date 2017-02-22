@@ -127,7 +127,8 @@ public class wifiData extends AppCompatActivity {
             try {
                 String data = "SSID: " + wifi.getConnectionInfo().getSSID() + "\n" +
                         "MAC Addresses: " + wifi.getConnectionInfo().getMacAddress() + "\n" +
-                        "IP Addresses: " + wifi.getConnectionInfo().getIpAddress() + "\n" +
+                        // "IP Addresses: " + wifi.getConnectionInfo().getIpAddress() + "\n" +
+                          "IP Addresses: "+     Formatter.formatIpAddress(wifi.getConnectionInfo().getIpAddress())+"\n"+
                         "Link Speed: " + wifi.getConnectionInfo().getLinkSpeed() + "\n" +
                         "Router MAC: " + wifi.getConnectionInfo().getBSSID() + "\n" +
                         "Frequency: " + wifi.getConnectionInfo().getFrequency() + "\n";
