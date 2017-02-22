@@ -11,6 +11,8 @@ public class MainScreen extends AppCompatActivity {
 
     Button wifi;
     Button cellular;
+    Button map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +20,7 @@ public class MainScreen extends AppCompatActivity {
 
         wifi = (Button) findViewById(R.id.wifi_button);
         cellular = (Button)findViewById(R.id.cellular_button);
+        map = (Button)findViewById(R.id.mapButton);
 
         final Context context = this;
 
@@ -31,6 +34,13 @@ public class MainScreen extends AppCompatActivity {
         cellular.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(context, CellularData.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        map.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MapsActivity.class);
                 startActivity(intent);
                 finish();
             }
