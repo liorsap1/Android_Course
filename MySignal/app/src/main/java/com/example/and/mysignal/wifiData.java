@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -29,9 +30,9 @@ public class wifiData extends AppCompatActivity {
     WifiManager wifi;
     String results[] = new String[20];
     TextView signal;
-    TextView signalStrength;
-    Button back;
-    Button details;
+    //TextView signalStrength;
+    ImageView back;
+   // ImageView details;
     Boolean clicked = false;
 
 
@@ -53,9 +54,9 @@ public class wifiData extends AppCompatActivity {
 
 
         signal = (TextView) findViewById(R.id.title);
-        back = (Button) findViewById(R.id.back_home);
-        details = (Button) findViewById(R.id.details);
-        signalStrength = (TextView) findViewById(R.id.signal);
+        back = (ImageView) findViewById(R.id.details);
+        //details = (ImageView) findViewById(R.id.details);
+        //signalStrength = (TextView) findViewById(R.id.signal);
 
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
@@ -70,13 +71,17 @@ public class wifiData extends AppCompatActivity {
         viewport.setMaxY(100);
         viewport.setScrollable(true);
 
-        details.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                runner.execute("infoButton");
-                clicked = !clicked;
-                runIndices();
-            }
-        });
+        runner.execute("infoButton");
+        clicked = !clicked;
+        runIndices();
+
+//        details.setOnClickListener(new OnClickListener() {
+//            public void onClick(View v) {
+//                runner.execute("infoButton");
+//                clicked = !clicked;
+//                runIndices();
+//            }
+//        });
         back.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(context, MainScreen.class);
@@ -110,7 +115,7 @@ public class wifiData extends AppCompatActivity {
                 } else {
                     int force = getWifiStrength();
                     if (force != -1) {
-                        signalStrength.setText("the strength is: "+force+ "%\n");
+                       // signalStrength.setText("the strength is: "+force+ "%\n");
                         series.appendData(new DataPoint(lastPoint,force), true, 100);
                         graph.addSeries(series);
                         lastPoint++;
