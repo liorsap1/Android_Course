@@ -55,10 +55,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         pinPlace = (Button)findViewById(R.id.pinMap);
 
 
-        mapDataBase = new MapDB(this);
-        SQLiteDatabase db = mapDataBase.getWritableDatabase();
+//        mapDataBase = new MapDB(this);
+//        SQLiteDatabase db = mapDataBase.getWritableDatabase();
 
-        runner = db.query(Points.MapPointsLocation.TABLE_NAME,null,null,null,null,null,null);
+//        runner = db.query(Points.MapPointsLocation.TABLE_NAME,null,null,null,null,null,null);
 
         back_to_menu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -66,11 +66,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
-        pinPlace.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                pinThePlace();
-            }
-        });
+//        pinPlace.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                pinThePlace();
+//            }
+//        });
     }
 
     @Override
@@ -85,23 +85,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-        mMap.addMarker(new MarkerOptions().position(myLocation).title("YOU ARE HERE!"));
-//        mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(31.781600, 35.208700))
-//                .title("[Usr-Gershon] "+ DistanceFromPoint(31.781600,35.208700,31.780600,35.207700)));
 
+
+
+
+        mMap.addMarker(new MarkerOptions().position(myLocation).title("YOU ARE HERE!"));
         double zoomLevel = 17.0; //This goes up to 21
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, (float) zoomLevel));
     }
 
     public void putPinsOnMap(){
         List itemIds = new ArrayList<>();
+        List longtitude = new ArrayList<>();
+        List altitude = new ArrayList<>();
+        List strength = new ArrayList<>();
+        List type = new ArrayList<>();
         while(runner.moveToNext()) {
-            long itemId = cursor.getLong(
-                    cursor.getColumnIndexOrThrow(FeedEntry._ID));
+            int itemId = runner.getInt(runner.getColumnIndexOrThrow(Points.MapPointsLocation._ID));
+            int longtit = runner.getColumnIndexOrThrow(Points.MapPointsLocation.Longtitude);
+            int altit = runner.getColumnIndexOrThrow(Points.MapPointsLocation.Altitude);
+            int streng = runner.getColumnIndexOrThrow(Points.MapPointsLocation.Strength);
+            int typeof = runner.getColumnIndexOrThrow(Points.MapPointsLocation.TYPE);
             itemIds.add(itemId);
+            longtitude.add(longtit);
+            altitude.add(altit);
+            strength.add(streng);
+            LatLng myLocation = new LatLng(altit, longtit);
+            mMap.addMarker(new MarkerOptions().position(myLocation).title("The Strength here: "+strength+"dBm"));
+            type.add(typeof);
         }
-        cursor.close();
+        runner.close();
     }
 
     public void pinThePlace(){

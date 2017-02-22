@@ -14,7 +14,7 @@ public class MainScreen extends AppCompatActivity {
     Button map;
     ImageView wifi;
     ImageView cellular;
-    ImageView _map_button;
+    ImageView map_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MainScreen extends AppCompatActivity {
 
         wifi = (ImageView) findViewById(R.id.wifi_button);
         cellular = (ImageView)findViewById(R.id.cellular_button);
-        _map_button = (ImageView)findViewById(R.id.map_button);
+        map_button = (ImageView)findViewById(R.id.map_button);
 
         final Context context = this;
 
@@ -41,12 +41,12 @@ public class MainScreen extends AppCompatActivity {
                 finish();
             }
         });
-//        map.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(context, MapsActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+        map_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MapsActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
