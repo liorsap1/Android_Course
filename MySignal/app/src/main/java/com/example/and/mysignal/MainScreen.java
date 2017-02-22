@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 public class MainScreen extends AppCompatActivity {
 
+    Button map;
     ImageView wifi;
     ImageView cellular;
     ImageView _map_button;
@@ -40,5 +41,12 @@ public class MainScreen extends AppCompatActivity {
                 finish();
             }
         });
+//        map.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, MapsActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
     }
 }
