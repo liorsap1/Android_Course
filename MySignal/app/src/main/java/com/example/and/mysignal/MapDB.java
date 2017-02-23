@@ -24,6 +24,8 @@ public class MapDB extends SQLiteOpenHelper {
             ");";
 
 
+
+
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS" + Points.MapPointsLocation.TABLE_NAME;
 
@@ -36,7 +38,9 @@ public class MapDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         Log.v("MyApp", "query=" + SQL_CREATE_ENTRIES);
+        System.out.println("----------------Query------------------------\n"+SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 

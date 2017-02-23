@@ -17,9 +17,9 @@ public final class Points {
 
     public static abstract class MapPointsLocation implements BaseColumns {
         public static final String TABLE_NAME = "locationTable";
-        public static final String Longtitude = "0.0";
-        public static final String Altitude = "0.0";
-        public static final String Strength = "0";
+        public static final String Longtitude = "Longtitude";
+        public static final String Altitude = "Altitude";
+        public static final String Strength = "Strength";
         public static final String TYPE= "type";
 
     }
