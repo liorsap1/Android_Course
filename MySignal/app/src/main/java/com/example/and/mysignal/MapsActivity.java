@@ -1,5 +1,6 @@
 package com.example.and.mysignal;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button back_to_menu;
     private Button pinPlace;
     MapDB mapDataBase;
+    SQLiteDatabase db;
     String[] projection = {Points.MapPointsLocation._ID,
             Points.MapPointsLocation.Longtitude,
             Points.MapPointsLocation.Altitude,
@@ -54,10 +57,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         pinPlace = (Button)findViewById(R.id.pinMap);
 
 
-//        mapDataBase = new MapDB(this);
-//        SQLiteDatabase db = mapDataBase.getWritableDatabase();
+        mapDataBase = new MapDB(this);
+        db = mapDataBase.getWritableDatabase();
 
-//        runner = db.query(Points.MapPointsLocation.TABLE_NAME,null,null,null,null,null,null);
+        runner = db.query(Points.MapPointsLocation.TABLE_NAME,null,null,null,null,null,null);
 
         back_to_menu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -65,11 +68,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
-//        pinPlace.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                pinThePlace();
-//            }
-//        });
+        pinPlace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                pinThePlace();
+            }
+        });
     }
 
     @Override
@@ -82,39 +85,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        Double lontit = location.getLongitude();
+        Double altit = location.getLatitude();
 
-
-
-
-
+        LatLng myLocation = new LatLng(altit, lontit);
+        InsrtToDataBse(lontit,altit);
         mMap.addMarker(new MarkerOptions().position(myLocation).title("YOU ARE HERE!"));
+        pinAllPoints();
         double zoomLevel = 17.0; //This goes up to 21
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, (float) zoomLevel));
     }
 
-    public void putPinsOnMap(){
-        List itemIds = new ArrayList<>();
-        List longtitude = new ArrayList<>();
-        List altitude = new ArrayList<>();
-        List strength = new ArrayList<>();
-        List type = new ArrayList<>();
-        while(runner.moveToNext()) {
-            int itemId = runner.getInt(runner.getColumnIndexOrThrow(Points.MapPointsLocation._ID));
-            int longtit = runner.getColumnIndexOrThrow(Points.MapPointsLocation.Longtitude);
-            int altit = runner.getColumnIndexOrThrow(Points.MapPointsLocation.Altitude);
-            int streng = runner.getColumnIndexOrThrow(Points.MapPointsLocation.Strength);
-            int typeof = runner.getColumnIndexOrThrow(Points.MapPointsLocation.TYPE);
-            itemIds.add(itemId);
-            longtitude.add(longtit);
-            altitude.add(altit);
-            strength.add(streng);
-            LatLng myLocation = new LatLng(altit, longtit);
-            mMap.addMarker(new MarkerOptions().position(myLocation).title("The Strength here: "+strength+"dBm"));
-            type.add(typeof);
-        }
-        runner.close();
-    }
 
     public void pinThePlace(){
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -123,8 +104,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        Double longtit = location.getLongitude();
+        Double altit = location.getLatitude();
+        LatLng myLocation = new LatLng(altit ,longtit);
         mMap.addMarker(new MarkerOptions().position(myLocation).title("Measured!"));
+
+        InsrtToDataBse(longtit,altit);
+
         Context context = getApplicationContext();
         CharSequence text = "Measured Successfully!";
         int duration = Toast.LENGTH_SHORT;
@@ -132,6 +118,88 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
+
+
+    class GeoPoint {
+        int id;
+        double x;
+        double y;
+        String strength ="";
+        String type= "";
+
+        public GeoPoint(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+        public GeoPoint(){}
+        public void setLong(Double x){this.x=x;}
+        public void setAlt(Double y){this.y=y;}
+        public void setid(int y){this.id=y;}
+        public void setStrength(String y){this.strength=y;}
+        public void setType(String y){this.type=y;}
+    }
+
+
+    public List<GeoPoint> pinAllPoints() {
+        List<GeoPoint> contactList = new ArrayList<GeoPoint>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Points.MapPointsLocation.TABLE_NAME;
+
+        db = mapDataBase.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                GeoPoint Points = new GeoPoint();
+                Points.setid(Integer.parseInt(cursor.getString(0)));
+                Points.setLong(Double.parseDouble(cursor.getString(1)));
+                Points.setAlt(Double.parseDouble(cursor.getString(2)));
+                Points.setStrength(cursor.getString(3));
+                Points.setType(cursor.getString(4));
+                // Adding contact to list
+                contactList.add(Points);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        for (int  i=0;i < contactList.size(); i++){
+            System.out.println("contactList.get(i).y ,contactList.get(i).x) : "+contactList.get(i).y+" "+contactList.get(i).x);
+            LatLng myLocation = new LatLng(contactList.get(i).y ,contactList.get(i).x);
+            mMap.addMarker(new MarkerOptions().position(myLocation).title("Measured!"));
+        }
+        // return contact list
+        return contactList;
+    }
+
+
+    public void InsrtToDataBse(Double longtit,Double altit){
+        db= mapDataBase.getReadableDatabase();
+        String x = ""+longtit;
+        String y = ""+altit;
+        if (!x.equals("")) {
+            ContentValues values =new ContentValues();
+            values.put(Points.MapPointsLocation.Longtitude,x);
+            values.put(Points.MapPointsLocation.Altitude,y);
+            db.insert(Points.MapPointsLocation.TABLE_NAME,null,values);
+        }
+        ContentValues values2 =new ContentValues();
+
+
+//        .position(new LatLng(31.781600, 35.208700))
+//                .title("[Usr-Gershon] "+ DistanceFromPoint(31.781600,35.208700,31.780600,35.207700)));
+//        mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(31.780400, 35.209325))
+//                .title("[Usr-Danny] "+ DistanceFromPoint(31.780400,35.209325,31.780600,35.207700)));
+//        mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(31.784600, 35.207107))
+//                .title("[Usr-Moshe] "+ DistanceFromPoint(31.784600,35.207107,31.780600,35.207700)));
+//
+        values2.put(Points.MapPointsLocation.Longtitude,"35.193710");
+        values2.put(Points.MapPointsLocation.Altitude,"31.769159");
+        db.insert(Points.MapPointsLocation.TABLE_NAME,null,values2);
+        System.out.println("comes here");
+    }
+
 
     ///Return distance from the point in meter
     private String DistanceFromPoint(double latA, double lngA, double latB, double lngB) {
@@ -146,74 +214,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return ((int) distance + "m From you");
     }
 }
-
-
-
-
-
-
-
-/*
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
-    private GoogleMap mMap;
-    private GoogleApiClient mGoogleApiClient;
-
-    public static final String TAG = MapsActivity.class.getSimpleName();
-
-    final long MIN_TIME_FOR_UPDATE = 1000;
-    final float MIN_DIS_FOR_UPFATE = 0.01f;
-    Button goBack;
-    Location location;
-    Double locationX = 0.0;
-    Double locationY = 0.0;
-    LatLng mevaseret;
-
-    LocationManager locationManager;
-    String mprovider;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        goBack = (Button) findViewById(R.id.back_home);
-
-        final Context context = this;
-
-        final int REQUEST_CODE_ASK_PERMISSIONS = 123;
-        ActivityCompat.requestPermissions(this, new String[]{"android.permission.ACCESS_FINE_LOCATION"}, REQUEST_CODE_ASK_PERMISSIONS);
-        if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_GRANTED) {
-            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        }
-
-        goBack.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MainScreen.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-
-
-        mMap = googleMap;
-
-
-        // Add a marker in Sydney and move the camera
-        mMap.addMarker(new MarkerOptions().position(mevaseret).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mevaseret));
-    }
-}
-*/
