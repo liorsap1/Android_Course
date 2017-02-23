@@ -9,11 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-<<<<<<< HEAD
-import android.provider.Settings;
-=======
 import android.os.Bundle;
->>>>>>> f2d645ae43dadfb912ded0eff69aa1f26deb1e76
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -188,16 +184,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         ContentValues values2 =new ContentValues();
 
-
-//        .position(new LatLng(31.781600, 35.208700))
-//                .title("[Usr-Gershon] "+ DistanceFromPoint(31.781600,35.208700,31.780600,35.207700)));
-//        mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(31.780400, 35.209325))
-//                .title("[Usr-Danny] "+ DistanceFromPoint(31.780400,35.209325,31.780600,35.207700)));
-//        mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(31.784600, 35.207107))
-//                .title("[Usr-Moshe] "+ DistanceFromPoint(31.784600,35.207107,31.780600,35.207700)));
-//
         values2.put(Points.MapPointsLocation.Longtitude,"35.193710");
         values2.put(Points.MapPointsLocation.Altitude,"31.769159");
         db.insert(Points.MapPointsLocation.TABLE_NAME,null,values2);
@@ -214,7 +200,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationB.setLatitude(latB);
         locationB.setLongitude(lngB); //
         float distance = locationA.distanceTo(locationB);
-
         return ((int) distance + "m From you");
     }
 }
